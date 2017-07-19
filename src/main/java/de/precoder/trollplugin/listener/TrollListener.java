@@ -8,6 +8,7 @@ public class TrollListener {
 	
 	public static ArrayList<Player> freezelist = new ArrayList<>();
 	public static ArrayList<Player> vanishlist = new ArrayList<>();
+	public static ArrayList<Player> playerlist = new ArrayList<>();
 	
 	
 	public static ArrayList<Player> getFreezedPayers() {
@@ -15,8 +16,17 @@ public class TrollListener {
 	}
 	
 	
-	public static ArrayList<Player> getFVanishedPayers() {
+	public static ArrayList<Player> getVanishedPayers() {
 		return vanishlist;
+	}
+	
+	
+	public static Boolean isPlayerVerified(Player p) {
+		if(playerlist.contains(p)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	
@@ -39,7 +49,7 @@ public class TrollListener {
 	
 	
 	public static Boolean isPlayerVanished(Player p) {
-		if(getFVanishedPayers().contains(p)) {
+		if(getVanishedPayers().contains(p)) {
 			return true;
 		} else {
 			return false;
