@@ -5,7 +5,9 @@ import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.plugin.PluginManager;
 import cn.nukkit.utils.TextFormat;
 import de.precoder.trollplugin.command.TrollCommand;
+import de.precoder.trollplugin.listener.PlayerInteract;
 import de.precoder.trollplugin.listener.PlayerMove;
+import de.precoder.trollplugin.listener.ProjectileHit;
 import de.precoder.trollplugin.task.VanishTask;
 
 public class Main extends PluginBase {
@@ -44,6 +46,8 @@ public class Main extends PluginBase {
 		PluginManager pm = getServer().getPluginManager();
 		
 		pm.registerEvents(new PlayerMove(), this);
+		pm.registerEvents(new PlayerInteract(), this);
+		pm.registerEvents(new ProjectileHit(), this);
 	}
 
 }
