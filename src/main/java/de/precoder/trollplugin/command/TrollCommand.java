@@ -12,7 +12,10 @@ public class TrollCommand extends MainCommand {
 	
 	private String helppage = "§7-------[§cTroll Help§7]-------\n"
 			+ "§e/troll help §7-> §6Zeigt diese Seite\n"
-			+ "§e/troll freeze <spieler> §7-> §6Lässt einen Spieler erstarren";
+			+ "§e/troll vanish §7-> §6Macht dich unsichtbar\n"
+			+ "§e/troll freeze <spieler> §7-> §6Lässt einen Spieler erstarren\n"
+			+ "§e/troll fire <spieler> <seconds> §7-> §6Zündet einen Spieler an\n"
+			+ "§e/troll crash <spieler> §7-> §6Zündet einen Spieler an\n";
 	
 	public TrollCommand(Main plugin) {
 		super(plugin, "troll", "troll Command", null, new String[]{});
@@ -45,8 +48,60 @@ public class TrollCommand extends MainCommand {
 				return true;
 			}
 			
-			if(args[0].equals("freeze")) {
+			if(args[0].equals("vanish")) {
+				if(sender instanceof Player) {
+					Player p = (Player) sender;
+					if(TrollListener.isPlayerVanished(p)) {
+						TrollListener.setPlayerVanished(p, false);
+						p.sendMessage(Main.prefix + TextFormat.RED + "Du bist nicht länger unsichtbar!");
+					} else {
+						TrollListener.setPlayerVanished(p, true);
+						p.sendMessage(Main.prefix + TextFormat.GREEN + "Du bist jetzt unsichtbar!");
+					}
+				} else {
+					sender.sendMessage(Main.prefix + TextFormat.RED + "Der Command kann nur ingame ausgeführt werden!");
+				}
+				return true;
+			}
+			
+			if(args[0].equals("crash")) {
+				if(args.length > 1) {
+					if(Server.getInstance().getPlayer(args[1]) != null) {
+						Player fp = Server.getInstance().getPlayer(args[1]);
+						
+						fp.close("", "timeout");
+						
+						sender.sendMessage(Main.prefix + TextFormat.BLUE + fp.getName() + TextFormat.GOLD + " wurde gecrasht!");
+					} else {
+						sender.sendMessage(Main.prefix + TextFormat.RED + "Der Spieler wurde nicht gefunden!");
+					}
+				} else {
+					sender.sendMessage(Main.prefix + TextFormat.RED + "Benutzung: /troll crash <spieler>");
+					return true;
+				}
+			}
+			
+			if(args[0].equals("fire")) {
 				if(args.length > 2) {
+					if(Server.getInstance().getPlayer(args[1]) != null) {
+						Player fp = Server.getInstance().getPlayer(args[1]);
+						int seconds = Integer.parseInt(args[2]);
+						
+						fp.setOnFire(seconds);
+						
+						sender.sendMessage(Main.prefix + TextFormat.BLUE + fp.getName() + TextFormat.GOLD + " brennt jetzt für "+TextFormat.BLUE+seconds+" Sekunden!");
+					} else {
+						sender.sendMessage(Main.prefix + TextFormat.RED + "Der Spieler wurde nicht gefunden!");
+					}
+				} else {
+					sender.sendMessage(Main.prefix + TextFormat.RED + "Benutzung: /troll fire <spieler> <sekunden>");
+					return true;
+				}
+			}
+			
+			
+			if(args[0].equals("freeze")) {
+				if(args.length > 1) {
 					if(Server.getInstance().getPlayer(args[1]) != null) {
 						Player fp = Server.getInstance().getPlayer(args[1]);
 						if(TrollListener.isPlayerFreezed(fp)) {
@@ -59,13 +114,14 @@ public class TrollCommand extends MainCommand {
 							sender.sendMessage(Main.prefix + TextFormat.BLUE + "Benutze diesen Command erneut, um ihn wieder frei zu lassen.");
 							return true;
 						}
+					} else {
+						sender.sendMessage(Main.prefix + TextFormat.RED + "Der Spieler wurde nicht gefunden!");
 					}
 				} else {
 					sender.sendMessage(Main.prefix + TextFormat.RED + "Benutzung: /troll freeze <spieler>");
 					return true;
 				}
 			}
-			
 		}
 		
 		
