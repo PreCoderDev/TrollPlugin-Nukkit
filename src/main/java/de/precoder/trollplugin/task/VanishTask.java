@@ -21,6 +21,10 @@ public class VanishTask extends PluginTask<Plugin> {
 				for (Player all : Server.getInstance().getOnlinePlayers().values()) {
 					all.hidePlayer(hideplayer);
 				}
+			} else {
+				for (Player all : Server.getInstance().getOnlinePlayers().values()) {
+					all.showPlayer(hideplayer);
+				}
 			}
 		}
 		
