@@ -4,6 +4,9 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParameter;
+import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.data.EntityMetadata;
+import cn.nukkit.network.protocol.AddEntityPacket;
 import cn.nukkit.utils.TextFormat;
 import de.precoder.trollplugin.Main;
 import de.precoder.trollplugin.listener.TrollListener;
@@ -15,7 +18,10 @@ public class TrollCommand extends MainCommand {
 			+ "§e/troll vanish §7-> §6Macht dich unsichtbar\n"
 			+ "§e/troll freeze <spieler> §7-> §6Lässt einen Spieler erstarren\n"
 			+ "§e/troll fire <spieler> <seconds> §7-> §6Zündet einen Spieler an\n"
-			+ "§e/troll crash <spieler> §7-> §6Zündet einen Spieler an\n";
+			+ "§e/troll crash <spieler> §7-> §6Zündet einen Spieler an\n"
+			+ "§e/troll strike <spieler> [<anzahl>] §7-> §6Schießt einen Blitz auf den Spieler\n"
+			+ "§cSOON §e/troll fireball §7-> §6Gibt dir das Feuerball Item\n"
+			+ "§cSOON §e/troll minigun §7-> §6Gibt dir eine MiniGun\n";
 	
 	public TrollCommand(Main plugin) {
 		super(plugin, "troll", "troll Command", null, new String[]{});
@@ -53,6 +59,13 @@ public class TrollCommand extends MainCommand {
 					Player p = (Player) sender;
 					if(TrollListener.isPlayerVanished(p)) {
 						TrollListener.setPlayerVanished(p, false);
+						for (Player hideplayer : Server.getInstance().getOnlinePlayers().values()) {
+							if(TrollListener.isPlayerVanished(hideplayer)) {
+								for (Player all : Server.getInstance().getOnlinePlayers().values()) {
+									all.showPlayer(hideplayer);
+								}
+							}
+						}
 						p.sendMessage(Main.prefix + TextFormat.RED + "Du bist nicht länger unsichtbar!");
 					} else {
 						TrollListener.setPlayerVanished(p, true);
@@ -62,6 +75,43 @@ public class TrollCommand extends MainCommand {
 					sender.sendMessage(Main.prefix + TextFormat.RED + "Der Command kann nur ingame ausgeführt werden!");
 				}
 				return true;
+			}
+			
+			if(args[0].equals("strike")) {
+				if(args.length > 1) {
+					if(Server.getInstance().getPlayer(args[1]) != null) {
+						Player fp = Server.getInstance().getPlayer(args[1]);
+						int count = 1;
+						if(args.length > 2) {
+							count = Integer.parseInt(args[2]);
+						}
+						
+						for (int i = 0; i < count; i++) {
+							AddEntityPacket pk = new AddEntityPacket();
+							pk.type = 93;
+							pk.entityUniqueId = Entity.entityCount++;
+							pk.metadata = new EntityMetadata();
+							pk.speedX = 0;
+							pk.speedY = 0;
+							pk.speedZ = 0;
+							pk.yaw = (float) fp.getYaw();
+							pk.pitch = (float) fp.getPitch();
+							pk.x = (float) fp.x;
+							pk.y = (float) fp.y;
+							pk.z = (float) fp.z;
+							for (Player pl : fp.level.getPlayers().values()) {
+								pl.dataPacket(pk);
+							}
+						}
+						
+						sender.sendMessage(Main.prefix + TextFormat.BLUE + fp.getName() + TextFormat.GOLD + " vom Blitz getroffen!");
+					} else {
+						sender.sendMessage(Main.prefix + TextFormat.RED + "Der Spieler wurde nicht gefunden!");
+					}
+				} else {
+					sender.sendMessage(Main.prefix + TextFormat.RED + "Benutzung: /troll strike <spieler> [<anzahl>]");
+					return true;
+				}
 			}
 			
 			if(args[0].equals("crash")) {
