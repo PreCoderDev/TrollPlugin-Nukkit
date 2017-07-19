@@ -7,15 +7,15 @@ Permissions
 -------------
 - troll.cmd
 
-Momentane Features
+Momentane Features/Commands
 -------------
-- "/troll help"
-- "/troll vanish"
-- "/troll freeze <spieler>"
-- "/troll fire <spieler> <sekunden>"
-- "/troll crash <spieler>"
-- "/troll strike <spieler> [<anzahl>]"
-- "/troll granade"
+- /troll help
+- /troll vanish
+- /troll freeze
+- /troll fire
+- /troll crash
+- /troll strike
+- /troll granade
 
 Releases
 -------------
