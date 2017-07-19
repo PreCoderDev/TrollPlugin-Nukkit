@@ -6,6 +6,7 @@ import cn.nukkit.plugin.PluginManager;
 import cn.nukkit.utils.TextFormat;
 import de.precoder.trollplugin.command.TrollCommand;
 import de.precoder.trollplugin.listener.PlayerMove;
+import de.precoder.trollplugin.task.VanishTask;
 
 public class Main extends PluginBase {
 	
@@ -17,6 +18,8 @@ public class Main extends PluginBase {
 		
 		this.registerCommands();
 		this.registerListener();
+		
+		this.getServer().getScheduler().scheduleDelayedTask(new VanishTask(this), 20);
 		
 		this.getLogger().info(prefix + TextFormat.GREEN + "TrollPlugin wurde gestartet!");
 	}
