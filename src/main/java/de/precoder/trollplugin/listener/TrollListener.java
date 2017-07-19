@@ -7,10 +7,16 @@ import cn.nukkit.Player;
 public class TrollListener {
 	
 	public static ArrayList<Player> freezelist = new ArrayList<>();
+	public static ArrayList<Player> vanishlist = new ArrayList<>();
 	
 	
 	public static ArrayList<Player> getFreezedPayers() {
 		return freezelist;
+	}
+	
+	
+	public static ArrayList<Player> getFVanishedPayers() {
+		return vanishlist;
 	}
 	
 	
@@ -28,6 +34,24 @@ public class TrollListener {
 			freezelist.add(p);
 		} else {
 			freezelist.remove(p);
+		}
+	}
+	
+	
+	public static Boolean isPlayerVanished(Player p) {
+		if(getFVanishedPayers().contains(p)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	
+	public static void setPlayerVanished(Player p, Boolean status) {
+		if(status) {
+			vanishlist.add(p);
+		} else {
+			vanishlist.remove(p);
 		}
 	}
 
