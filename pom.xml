@@ -22,8 +22,7 @@
             <version>1.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <dependency> <groupId>com.tinfoiled.mcpe.leveldb</groupId> <artifactId>leveldb</artifactId> <version>0.8</version> </dependency>
-    </dependencies>
+       </dependencies>
     <repositories>
         <repository>
             <id>nukkit-repo</id>
