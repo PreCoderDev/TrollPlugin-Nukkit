@@ -19,7 +19,7 @@ public class Main extends PluginBase {
 		this.registerCommands();
 		this.registerListener();
 		
-		this.getServer().getScheduler().scheduleDelayedTask(new VanishTask(this), 20);
+		this.getServer().getScheduler().scheduleRepeatingTask(new VanishTask(this), 20);
 		
 		this.getLogger().info(prefix + TextFormat.GREEN + "TrollPlugin wurde gestartet!");
 	}
