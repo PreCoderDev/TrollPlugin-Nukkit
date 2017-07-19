@@ -5,7 +5,9 @@ Ein sich stätig erweiterndes Troll Plugin für Nukkit
 
 -- Dieses Plugin ist noch nicht fertig!
 
-
+Releases
+-------------
+- [Releases](https://github.com/PreCoderDev/TrollPlugin-Nukkit/releases/)
 
 JAR Datei erstellen
 -------------
