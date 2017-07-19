@@ -3,7 +3,19 @@
 
 Ein sich stätig erweiterndes Troll Plugin für Nukkit
 
--- Dieses Plugin ist noch nicht fertig!
+Permissions
+-------------
+- troll.cmd
+
+Momentane Features
+-------------
+- /troll help
+- /troll vanish
+- /troll freeze <spieler>
+- /troll fire <spieler> <sekunden>
+- /troll crash <spieler>
+- /troll strike <spieler> [<anzahl>]
+- /troll granade
 
 Releases
 -------------
