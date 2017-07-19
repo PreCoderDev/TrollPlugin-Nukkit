@@ -1,0 +1,16 @@
+machine:
+ java:
+  version: oraclejdk8
+
+checkout:
+ post:
+  - git submodule sync
+  - git submodule update --init
+  - mvn clean
+  - mvn package
+  - cp -R ./target/TrollPlugin*.jar $CIRCLE_ARTIFACTS
+
+test:
+  post:
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+- find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
