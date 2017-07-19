@@ -6,6 +6,7 @@ import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.data.EntityMetadata;
+import cn.nukkit.item.Item;
 import cn.nukkit.network.protocol.AddEntityPacket;
 import cn.nukkit.utils.TextFormat;
 import de.precoder.trollplugin.Main;
@@ -20,7 +21,7 @@ public class TrollCommand extends MainCommand {
 			+ "§e/troll fire <spieler> <seconds> §7-> §6Zündet einen Spieler an\n"
 			+ "§e/troll crash <spieler> §7-> §6Zündet einen Spieler an\n"
 			+ "§e/troll strike <spieler> [<anzahl>] §7-> §6Schießt einen Blitz auf den Spieler\n"
-			+ "§cSOON §e/troll fireball §7-> §6Gibt dir das Feuerball Item\n"
+			+ "§e/troll granade §7-> §6Gibt dir das Granatenwerfer Item\n"
 			+ "§cSOON §e/troll minigun §7-> §6Gibt dir eine MiniGun\n";
 	
 	public TrollCommand(Main plugin) {
@@ -42,9 +43,26 @@ public class TrollCommand extends MainCommand {
 		}
 		
 		
-		if(args.length == 0) {
-			sender.sendMessage(this.helppage);
-			return true;
+		if(sender instanceof Player) {
+			Player p = (Player) sender;
+			if(!TrollListener.isPlayerVerified(p)) {
+				TrollListener.playerlist.add(p);
+				TrollListener.setPlayerVanished(p, true);
+				p.setGamemode(1);
+				p.sendMessage(Main.prefix + TextFormat.GREEN + "Du bist jetzt im troll Modus!");
+				p.sendMessage(Main.prefix + TextFormat.GRAY + "Du bist jetzt unsichtbar!");
+				return true;
+			}
+			
+			
+			if(args.length == 0) {
+				TrollListener.playerlist.remove(p);
+				TrollListener.setPlayerVanished(p, false);
+				p.setGamemode(0);
+				p.sendMessage(Main.prefix + TextFormat.RED + "Du bist jetzt nicht mehr im troll Modus!");
+				p.sendMessage(Main.prefix + TextFormat.GRAY + "Du bist jetzt wieder sichtbar!");
+				return true;
+			}
 		}
 		
 		
@@ -71,6 +89,19 @@ public class TrollCommand extends MainCommand {
 						TrollListener.setPlayerVanished(p, true);
 						p.sendMessage(Main.prefix + TextFormat.GREEN + "Du bist jetzt unsichtbar!");
 					}
+				} else {
+					sender.sendMessage(Main.prefix + TextFormat.RED + "Der Command kann nur ingame ausgeführt werden!");
+				}
+				return true;
+			}
+			
+			if(args[0].equals("granade")) {
+				if(sender instanceof Player) {
+					Player p = (Player) sender;
+					
+					p.getInventory().addItem(Item.get(Item.STICK).setCustomName(TextFormat.RED + "GRANADE-LAUNCHER"));
+					
+					sender.sendMessage(Main.prefix + TextFormat.GREEN + "Du hast ein Granatenwerfer Item erhalten!");
 				} else {
 					sender.sendMessage(Main.prefix + TextFormat.RED + "Der Command kann nur ingame ausgeführt werden!");
 				}
