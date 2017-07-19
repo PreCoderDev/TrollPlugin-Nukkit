@@ -1,11 +1,13 @@
 package de.precoder.trollplugin;
 
+import cn.nukkit.command.CommandMap;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
+import de.precoder.trollplugin.command.TrollCommand;
 
 public class Main extends PluginBase {
 	
-	final static String prefix = TextFormat.GRAY + "[" + TextFormat.RED + "TrollPlugin" + TextFormat.GRAY + "] ";
+	public final static String prefix = TextFormat.GRAY + "[" + TextFormat.RED + "TrollPlugin" + TextFormat.GRAY + "] ";
 	
 	@Override
 	public void onEnable() {
@@ -28,7 +30,8 @@ public class Main extends PluginBase {
 	
 	
 	private void registerCommands() {
-		//CommandMap map = getServer().getCommandMap();
+		CommandMap map = getServer().getCommandMap();
+		map.register("troll", new TrollCommand(this));
 	}
 	
 	
